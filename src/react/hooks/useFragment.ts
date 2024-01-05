@@ -73,18 +73,14 @@ export function useFragment<TData = any, TVars = OperationVariables>(
   return useSyncExternalStore(
     (forceUpdate) => {
       let lastTimeout = 0;
-      const unsubcribe = cache.watch({
-        ...diffOptions,
-        immediate: true,
-        callback(diff) {
-          if (!equal(diff, latestDiff)) {
-            resultRef.current = diffToResult((latestDiff = diff));
-            lastTimeout = setTimeout(forceUpdate) as any;
-          }
+      const watchedFragment = cache.watchFragment(options).subscribe({
+        next: (result) => {
+          resultRef.current = result;
+          lastTimeout = setTimeout(forceUpdate) as any;
         },
       });
       return () => {
-        unsubcribe();
+        watchedFragment.unsubscribe();
         clearTimeout(lastTimeout);
       };
     },
