@@ -1,5 +1,15 @@
 # @apollo/client
 
+## 3.8.9
+
+### Patch Changes
+
+- [#11464](https://github.com/apollographql/apollo-client/pull/11464) [`aac12b2`](https://github.com/apollographql/apollo-client/commit/aac12b221a6cb776d4941b6c8aadf04f0f0acd27) Thanks [@jerelmiller](https://github.com/jerelmiller)! - Prevent `useFragment` from excessively unsubscribing and resubscribing the fragment with the cache on every render.
+
+- [#11449](https://github.com/apollographql/apollo-client/pull/11449) [`f40cda4`](https://github.com/apollographql/apollo-client/commit/f40cda45841e93b056c781c19651b54464f7346a) Thanks [@phryneas](https://github.com/phryneas)! - Removes refences to the typescript "dom" lib.
+
+- [#11470](https://github.com/apollographql/apollo-client/pull/11470) [`e293bc9`](https://github.com/apollographql/apollo-client/commit/e293bc90d6f7937a6fc7c169f7b16eeb39d5fd49) Thanks [@phryneas](https://github.com/phryneas)! - Remove an unnecessary check from parseAndCheckHttpResponse.
+
 ## 3.8.8
 
 ### Patch Changes
@@ -199,7 +209,7 @@
     return data.breeds.map(({ characteristics }) =>
       characteristics.map((characteristic) => (
         <div key={characteristic}>{characteristic}</div>
-      ))
+      )),
     );
   }
   ```
@@ -250,7 +260,7 @@
 
   const { data } = useSuspenseQuery(
     query,
-    id ? { variables: { id } } : skipToken
+    id ? { variables: { id } } : skipToken,
   );
   ```
 
@@ -2205,7 +2215,7 @@ In upcoming v3.6.x and v3.7 (beta) releases, we will be completely overhauling o
     fields: {
       comments(comments: Reference[], { readField }) {
         return comments.filter(
-          (comment) => idToRemove !== readField("id", comment)
+          (comment) => idToRemove !== readField("id", comment),
         );
       },
     },
